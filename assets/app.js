@@ -258,6 +258,49 @@ if (journalFilters) {
     });
   });
 }
+
+const faqTopics = document.querySelector('.faq-topics');
+if (faqTopics) {
+  const tabs = [...faqTopics.querySelectorAll('[role="tab"]')];
+  const panels = tabs.map(tab => document.getElementById(tab.getAttribute('aria-controls')));
+  let current = -1;
+
+  function selectFaqTopic(index) {
+    if (index === current) return;
+    tabs.forEach((tab, position) => {
+      const active = position === index;
+      tab.setAttribute('aria-selected', String(active));
+      tab.tabIndex = active ? 0 : -1;
+      panels[position].hidden = !active;
+    });
+    if (current >= 0 && !reduced && panels[index].animate) {
+      panels[index].animate(
+        [{ opacity: .5, transform: 'translateY(4px)' }, { opacity: 1, transform: 'none' }],
+        { duration: 230, easing: 'ease-out' },
+      );
+    }
+    current = index;
+  }
+
+  tabs.forEach((tab, index) => tab.addEventListener('click', () => selectFaqTopic(index)));
+  faqTopics.addEventListener('keydown', event => {
+    const destinations = {
+      Home: 0, End: tabs.length - 1,
+      ArrowLeft: current - 1, ArrowUp: current - 1,
+      ArrowRight: current + 1, ArrowDown: current + 1,
+    };
+    if (!Object.hasOwn(destinations, event.key)) return;
+    event.preventDefault();
+    const next = (destinations[event.key] + tabs.length) % tabs.length;
+    selectFaqTopic(next);
+    tabs[next].focus();
+  });
+
+  selectFaqTopic(0);
+  faqTopics.hidden = false;
+  faqTopics.closest('.faq-module').classList.add('faq-enhanced');
+}
+
 if (!reduced && typeof Element.prototype.animate === 'function') {
   document.querySelectorAll('.faq-item').forEach(details => {
     const summary = details.querySelector('summary');
@@ -272,7 +315,8 @@ if (!reduced && typeof Element.prototype.animate === 'function') {
       opening = !wasOpen;
       if (opening) details.open = true;
       details.classList.toggle('closing', !opening);
-      const finalHeight = summary.offsetHeight + (opening ? answer.offsetHeight : 0) + 1;
+      const borderHeight = details.offsetHeight - details.clientHeight;
+      const finalHeight = summary.offsetHeight + (opening ? answer.offsetHeight : 0) + borderHeight;
       details.style.overflow = 'hidden';
       animation = details.animate({ height: [initialHeight+'px', finalHeight+'px'] }, {
         duration: 290,

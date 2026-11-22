@@ -76,7 +76,7 @@ body.vezen-home > header:not(.has-scrolled) {
 }
 .vezen-home .lead-frame .brand-motion::after {
   background:
-    linear-gradient(180deg, #082b1de6 0%, #0a2c1b32 23%, transparent 54%, #0b27199e 100%),
+    linear-gradient(180deg, #082b1de6 0%, #0a2c1b32 23%, transparent 51%, #0b271985 76%, #0b2719b0 100%),
     linear-gradient(90deg, #0c291de8 0%, #102e1db3 31%, #13371c35 58%, transparent 94%);
 }
 .lead-bottom {
@@ -167,4 +167,121 @@ body.vezen-home > header:not(.has-scrolled) {
   body.vezen-home > header { padding-inline: 9px; }
   body.vezen-home > header .logo img { width: 76px; }
   .vezen-home .lead-frame .actions :is(.button,.btn) { padding-inline: 11px; }
+}
+
+.vezen-home .home-faq {
+  display: block;
+  scroll-margin-top: 14px;
+}
+.faq-masthead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px 24px;
+  margin-bottom: clamp(17px, 2.5vw, 34px);
+}
+.faq-masthead h2 {
+  font-size: clamp(35px, 4vw, 56px);
+  letter-spacing: -.047em;
+}
+.faq-masthead .button {
+  flex-shrink: 0;
+  background: #fff;
+  color: var(--brand-deep);
+  border: 1px solid #9cbea1;
+}
+.faq-module {
+  border: 1px solid #d8e5d6;
+  border-radius: 16px;
+  background: #f2f8ef;
+  padding: clamp(13px, 2.15vw, 32px);
+}
+.faq-module.faq-enhanced {
+  display: grid;
+  grid-template-columns: minmax(170px, .3fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(12px, 2.25vw, 34px);
+}
+.faq-topics {
+  display: grid;
+  align-content: start;
+  gap: 7px;
+}
+.faq-topics[hidden], .faq-panels [hidden], .faq-enhanced .faq-topic-heading { display: none; }
+.faq-topics button {
+  display: block;
+  padding: 11px 14px;
+  min-height: 47px;
+  border: 1px solid #d3e4d0;
+  border-radius: 9px;
+  background: #fff;
+  color: var(--brand-deep);
+  font-weight: 650;
+  font-size: 15px;
+  text-align: left;
+  line-height: 1.3;
+  transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+}
+.faq-topics button:hover { background: #eaf3e7; }
+.faq-topics button[aria-selected="true"] {
+  background: var(--brand-green);
+  border-color: var(--brand-green);
+  color: #fff;
+}
+.faq-panels { min-width: 0; }
+.faq-topic-heading { font-size: 20px; margin-block: 8px 10px; }
+.faq-question-list { display: grid; gap: 8px; }
+.vezen-home .home-faq .faq-item {
+  margin: 0;
+  background: #fff;
+  border: 1px solid #dae9d7;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.vezen-home .home-faq .faq-item[open] { border-color: #b6d1af; }
+.vezen-home .home-faq .faq-item summary {
+  min-height: 57px;
+  padding: 11px clamp(12px, 1.45vw, 23px);
+  color: var(--ink);
+  gap: 12px;
+  line-height: 1.27;
+  cursor: pointer;
+  font-size: clamp(15px, 1.25vw, 18px);
+  font-weight: 650;
+}
+.vezen-home .home-faq .faq-item summary:focus-visible { outline-offset: -4px; border-radius: 9px; }
+.vezen-home .home-faq .faq-item summary:hover { background: #f8fcf7; color: var(--brand-green); }
+.vezen-home .home-faq .faq-answer { padding: 0 clamp(15px, 1.45vw, 23px) 15px; }
+.vezen-home .home-faq .faq-answer p { max-width: 68ch; font-size: 16px; line-height: 1.55; }
+.vezen-home .home-faq .faq-toggle {
+  width: 29px;
+  height: 29px;
+  border-radius: 7px;
+  background: #eff7ea;
+  color: var(--brand-green);
+}
+.vezen-home .home-faq .faq-toggle::before { display: none; }
+.vezen-home .home-faq .faq-toggle::after {
+  width: 8px;
+  height: 8px;
+  border-radius: 0;
+  border-right: 1.7px solid currentColor;
+  border-bottom: 1.7px solid currentColor;
+  background: transparent;
+  transform: translateY(-2px) rotate(45deg);
+}
+.vezen-home .home-faq .faq-item[open]:not(.closing) .faq-toggle {
+  color: #fff;
+  background: var(--brand-green);
+}
+.vezen-home .home-faq .faq-item[open]:not(.closing) .faq-toggle::after { transform: translateY(2px) rotate(225deg); }
+
+@media (max-width: 710px) {
+  .faq-module.faq-enhanced { grid-template-columns: minmax(0, 1fr); }
+  .faq-topics { display: flex; flex-wrap: wrap; gap: 5px; }
+  .faq-topics button { min-height: 42px; padding: 8px 10px; font-size: 13px; }
+  .faq-masthead { align-items: start; flex-wrap: wrap; }
+  .faq-masthead h2 { font-size: clamp(28px, 8.5vw, 42px); }
+  .faq-masthead .button { min-height: 42px; padding-inline: 13px; font-size: 14px; }
+  .vezen-home .home-faq .faq-answer p { font-size: 15px; }
 }
