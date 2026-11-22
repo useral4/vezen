@@ -94,6 +94,7 @@ function animateChange(region, update) {
 
 if (catalog && catalogPage) {
   const field = document.getElementById('search');
+  const catalogTop = catalogPage.querySelector('.catalog-top');
   const region = catalogPage.querySelector('.catalog-results');
   const banner = region.querySelector('[data-catalog-banner]');
   const list = region.querySelector('[data-product-results]');
@@ -117,8 +118,6 @@ if (catalog && catalogPage) {
     categoryLinks.find(link => link.dataset.category === categorySelect.value)?.click();
   });
   let current = initial;
-  let requested = initial;
-
   let searchingAll = false;
 
   function searchProducts() {
@@ -142,16 +141,15 @@ if (catalog && catalogPage) {
   }
 
   function bringCatalogIntoView() {
-    const top = catalogPage.querySelector('.catalog-top');
-    const offset = top.getBoundingClientRect().top - (header?.offsetHeight ?? 0) - 16;
+    const offset = catalogTop.getBoundingClientRect().top - (header?.offsetHeight ?? 0) - 16;
     if (offset < 0) window.scrollTo({ top: window.scrollY + offset, behavior: 'instant' });
   }
 
-  function showCategory(key, animated = true) {
+  function showCategory(key, { query = '', revealStart = false } = {}) {
     const entry = catalog.state[key];
-    if (!entry || key === requested) return;
-    requested = key;
-    const replaceContent = () => {
+    if (!entry) return;
+    const changed = key !== current;
+    if (changed) {
       current = key;
       banner.innerHTML = entry.banner;
       list.innerHTML = entry.rows;
@@ -166,11 +164,17 @@ if (catalog && catalogPage) {
       });
       searchingAll = false;
       banner.hidden = false;
-      field.value = '';
-      searchProducts();
-    };
-    if (animated) animateChange(region, replaceContent);
-    else replaceContent();
+    }
+    field.value = query;
+    searchProducts();
+
+    if (!revealStart) return;
+    // The new list can be shorter than the outgoing list. Position the viewport after the swap.
+    bringCatalogIntoView();
+    if (changed && !reduced && region.animate) {
+      region.getAnimations().forEach(animation => animation.cancel());
+      region.animate({ opacity: [.72, 1] }, { duration: 220, easing: 'ease-out' });
+    }
   }
 
   function categoryAtAddress() {
@@ -187,30 +191,40 @@ if (catalog && catalogPage) {
     if (!link || event.defaultPrevented || event.button || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
     const key = link.dataset.category;
-    if (key === requested) {
-      bringCatalogIntoView();
-      field.value = '';
-      searchProducts();
-      return;
+    const focusHeading = list.contains(link) && link.matches(':focus-visible');
+    if (key !== current || new URLSearchParams(location.search).has('q')) {
+      const destination = new URL(link.href);
+      if (location.protocol === 'file:') {
+        destination.pathname = location.pathname;
+        destination.hash = key;
+      }
+      try {
+        history.replaceState({ ...history.state, catalogScrollY: window.scrollY }, '');
+        history.pushState({ category: key }, '', destination);
+      } catch {
+        location.assign(link.href);
+        return;
+      }
     }
-    const to = location.protocol === 'file:' ? '#'+key : link.href;
-    try {
-      history.pushState({ category: key }, '', to);
-    } catch {
-      location.assign(link.href);
-      return;
+    showCategory(key, { revealStart: true });
+    if (focusHeading) {
+      heading.tabIndex = -1;
+      heading.focus({ preventScroll: true });
     }
-    bringCatalogIntoView();
-    showCategory(key);
   });
-  window.addEventListener('popstate', () => showCategory(categoryAtAddress()));
-  const startingKey = categoryAtAddress();
-  if (startingKey !== current) showCategory(startingKey, false);
-  const sharedQuery = new URLSearchParams(location.search).get('q');
-  if (sharedQuery) {
-    field.value = sharedQuery;
-    searchProducts();
+
+  function restoreCatalogFromAddress(event) {
+    showCategory(categoryAtAddress(), { query: new URLSearchParams(location.search).get('q') || '' });
+    const previousScroll = event?.state?.catalogScrollY;
+    if (!Number.isFinite(previousScroll)) return;
+    const address = location.href;
+    // Native history can clamp the saved offset to the size of the outgoing category.
+    requestAnimationFrame(() => {
+      if (location.href === address) window.scrollTo({ top: previousScroll, behavior: 'instant' });
+    });
   }
+  window.addEventListener('popstate', restoreCatalogFromAddress);
+  restoreCatalogFromAddress();
 }
 
 const backgroundClip = document.querySelector('.brand-hero video');

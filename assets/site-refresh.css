@@ -54,6 +54,21 @@ body > header.has-scrolled { box-shadow: 0 1px 0 var(--line); }
 }
 .catalog-top .search, .catalog-top .search input { width: 100%; }
 .catalog-top .search input { background: #fff; border-color: #aac6aa; }
+.catalog-search-field { display: block; position: relative; margin-top: 5px; }
+.catalog-search-field .search-glyph {
+  position: absolute;
+  top: 50%;
+  left: 17px;
+  transform: translateY(-50%);
+  color: var(--brand-green);
+  pointer-events: none;
+}
+.catalog-top .catalog-search-field input {
+  min-height: 52px;
+  padding-inline-start: 43px;
+  border-radius: 10px;
+  margin: 0;
+}
 
 .journal-index .journal-grid {
   display: grid;
