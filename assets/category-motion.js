@@ -7,6 +7,7 @@
   let autoplayBlocked = false;
 
   function stop(entry) {
+    clearTimeout(entry?.hoverTimer);
     if (!entry?.playback) return;
     entry.playback = null;
     if (desktopActive === entry) desktopActive = null;
@@ -34,14 +35,14 @@
     const compact = video.dataset.video;
     const hd = video.dataset.videoHd;
     const mobile = video.dataset.videoMobile;
-    const useHd = !automatic && finePointer.matches && !navigator.connection?.saveData && !entry.hdFailed;
+    const needsHd = card.clientWidth * devicePixelRatio > 768;
+    const useHd = !automatic && needsHd && !navigator.connection?.saveData && !entry.hdFailed;
     card.dataset.motion = 'loading';
     video.muted = true;
     video.loop = !automatic;
 
     function loadAndPlay(url) {
       if (video.getAttribute('src') !== url) video.src = url;
-      else if (!automatic && video.readyState > 0) video.currentTime = 0;
       video.play().catch(error => {
         if (entry.playback !== playback) return;
         if (url === hd && (error.name === 'NotSupportedError' || video.error)) {
@@ -56,7 +57,8 @@
         stop(entry);
       });
     }
-    loadAndPlay(automatic ? mobile : useHd ? hd : compact);
+    const desktopSource = useHd ? hd : compact;
+    loadAndPlay(automatic ? mobile : desktopSource);
   }
 
   function refreshMode() {
@@ -82,10 +84,16 @@
     entries.set(card, entry);
 
     card.addEventListener('pointerenter', event => {
-      if (finePointer.matches && event.pointerType === 'mouse') play(entry);
+      if (!finePointer.matches || event.pointerType !== 'mouse') return;
+      clearTimeout(entry.hoverTimer);
+      entry.hoverTimer = setTimeout(() => {
+        if (card.matches(':hover')) play(entry);
+      }, 105);
     });
     card.addEventListener('pointerleave', event => {
-      if (event.pointerType === 'mouse' && desktopActive === entry && !link.matches(':focus-visible')) stop(entry);
+      if (event.pointerType !== 'mouse') return;
+      clearTimeout(entry.hoverTimer);
+      if (desktopActive === entry && !link.matches(':focus-visible')) stop(entry);
     });
     link.addEventListener('focus', () => {
       if (finePointer.matches && link.matches(':focus-visible')) play(entry);

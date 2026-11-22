@@ -63,6 +63,14 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-inquire]')
 const catalog = window.vezenCatalog;
 const catalogPage = document.querySelector('[data-catalog-page]');
 
+function normalizeCatalogText(value) {
+  return value.normalize('NFKC').toLocaleLowerCase('ru').replaceAll('ё', 'е')
+    .replace(/[‐‑–—−]/g, '-').replace(/[^\p{L}\p{N}\s-]+/gu, ' ').trim();
+}
+
+function catalogSearchTokens(value) {
+  return normalizeCatalogText(value).replace(/^(cas|кас)\s+(?=\d)/, '').split(/\s+/).filter(Boolean);
+}
 
 function animateChange(region, update) {
   if (reduced || !region.animate) {
@@ -92,36 +100,45 @@ if (catalog && catalogPage) {
   const status = document.getElementById('results');
   const heading = catalogPage.querySelector('h1');
   const crumb = catalogPage.querySelector('[data-crumb-tail]');
-  const categoryLinks = [...catalogPage.querySelectorAll('.catalog-nav a')];
+  const categoryNav = catalogPage.querySelector('.catalog-nav');
+  const categoryLinks = [...categoryNav.querySelectorAll('a')];
   const initial = catalogPage.dataset.catalogPage;
+  const categoryPicker = document.createElement('label');
+  const categorySelect = document.createElement('select');
+  categoryPicker.className = 'catalog-picker';
+  categoryPicker.append('Категория', categorySelect);
+  categorySelect.replaceChildren(...categoryLinks.map(link => new Option(
+    link.querySelector('span').textContent,
+    link.dataset.category,
+  )));
+  categorySelect.value = initial;
+  categoryNav.before(categoryPicker);
+  categorySelect.addEventListener('change', () => {
+    categoryLinks.find(link => link.dataset.category === categorySelect.value)?.click();
+  });
   let current = initial;
   let requested = initial;
 
   let searchingAll = false;
 
-  function normalized(value) {
-    return value.toLocaleLowerCase('ru').replaceAll('ё','е').replace(/[‐‑–—−]/g,'-').replace(/[^\p{L}\p{N}\s-]+/gu,' ').trim();
-  }
-
   function searchProducts() {
-    const query = normalized(field.value).replace(/^(cas|кас)\s+(?=\d)/, "");
-    const searchWholeCatalog = Boolean(query);
+    const tokens = catalogSearchTokens(field.value);
+    const searchWholeCatalog = tokens.length > 0;
     if (searchWholeCatalog !== searchingAll) {
       list.innerHTML = catalog.state[searchWholeCatalog ? 'all' : current].rows;
       searchingAll = searchWholeCatalog;
       banner.hidden = searchWholeCatalog;
     }
-    const tokens = query.split(/\s+/).filter(Boolean);
     let visible = 0;
     list.querySelectorAll('.product-row').forEach(item => {
-      const haystack = normalized(item.textContent+' '+(item.dataset.searchTerms || ''));
+      const haystack = normalizeCatalogText(item.textContent+' '+(item.dataset.searchTerms || ''));
       item.hidden = tokens.some(token => !haystack.includes(token));
       visible += Number(!item.hidden);
     });
     list.querySelectorAll('[data-product-group]').forEach(group => {
       group.hidden = !group.querySelector('.product-row:not([hidden])');
     });
-    status.textContent = query ? visible ? 'Во всём каталоге найдено: '+visible : 'Совпадений нет. Попробуйте название, марку или CAS.' : '';
+    status.textContent = searchWholeCatalog ? visible ? 'Во всём каталоге найдено: '+visible : 'Совпадений нет. Попробуйте название, марку или CAS.' : '';
   }
 
   function showCategory(key, animated = true) {
@@ -133,6 +150,7 @@ if (catalog && catalogPage) {
       banner.innerHTML = entry.banner;
       list.innerHTML = entry.rows;
       heading.textContent = entry.heading;
+      categorySelect.value = key;
       crumb.hidden = key === 'all';
       crumb.querySelector('[data-crumb-label]').textContent = entry.heading;
       document.title = entry.heading+' | Везен';
@@ -180,10 +198,15 @@ if (catalog && catalogPage) {
   window.addEventListener('popstate', () => showCategory(categoryAtAddress()));
   const startingKey = categoryAtAddress();
   if (startingKey !== current) showCategory(startingKey, false);
+  const sharedQuery = new URLSearchParams(location.search).get('q');
+  if (sharedQuery) {
+    field.value = sharedQuery;
+    searchProducts();
+  }
 }
 
 const backgroundClip = document.querySelector('.brand-hero video');
-if (backgroundClip && !reduced) {
+if (backgroundClip) {
   const portrait = matchMedia('(max-width:650px)').matches;
   if (portrait) backgroundClip.poster = 'assets/brand-open-portrait.jpg';
   const play = () => {
@@ -191,14 +214,14 @@ if (backgroundClip && !reduced) {
     backgroundClip.src = portrait ? backgroundClip.dataset.mobile : backgroundClip.dataset.desktop;
     backgroundClip.play().catch(() => {});
   };
-  if ('IntersectionObserver' in window) {
+  if (!reduced && 'IntersectionObserver' in window) {
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting) return;
       observer.disconnect();
       play();
     }, { threshold: .2 });
     observer.observe(backgroundClip);
-  } else {
+  } else if (!reduced) {
     play();
   }
 }
