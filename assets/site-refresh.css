@@ -1,35 +1,166 @@
 @font-face {
-  font-family: Onest;
-  src: url("onest-variable.ttf") format("truetype");
+  font-family: "Golos Text";
+  src: url("golos-text-variable.ttf") format("truetype");
   font-style: normal;
-  font-weight: 100 900;
+  font-weight: 400 900;
   font-display: swap;
 }
 
 :root {
   --paper: #fff;
-  --line: #dce3dd;
-  --soft: #f4f6f4;
+  --brand-logo: #5f8d4e;
+  --brand-deep: #123e2c;
+  --brand-green: #215c3d;
+  --brand-lime: #c9e78a;
+  --brand-tint: #f0f8ea;
+  --ink: #16392a;
+  --pine: var(--brand-green);
+  --pine-dark: var(--brand-green);
+  --action-light: var(--brand-lime);
+  --action-ink: var(--brand-deep);
+  --line: #d9e6d8;
+  --rule: var(--line);
+  --soft: var(--brand-tint);
 }
-body { font-family: Onest, Arial, sans-serif; }
+body { font-family: "Golos Text", Arial, sans-serif; }
 body.vezen-home, body > header, body > header.has-scrolled { background: var(--paper); }
 body > header.has-scrolled { box-shadow: 0 1px 0 var(--line); }
 
-.vezen-home .brand-hero {
-  margin: clamp(8px, .9vw, 14px) clamp(12px, 1.3vw, 22px) clamp(10px, 1.1vw, 18px);
-  border-radius: 17px;
-}
-.vezen-home .brand-hero h1 {
-  font-size: clamp(46px, 4.65vw, 83px);
-  line-height: 1;
-  letter-spacing: -.052em;
-}
-.vezen-home .brand-hero h1 em { color: inherit; font-style: normal; }
-.vezen-home .brand-hero .button { background: #fff; }
-.vezen-home .brand-hero .hero-copy { padding-inline: clamp(30px, 4.15vw, 75px); }
+.btn::before, .button::before { background: var(--brand-lime); }
+.check input[type="checkbox"] { accent-color: var(--brand-logo); }
 .vezen-home .home-facts { border-color: var(--line); }
-.home-faq .faq-item { background: #f7f8f6; }
-.vezen-home .category-tile { background: #f6f8f6; }
+.home-faq .faq-item { background: #f5faf2; }
+.vezen-home .category-tile { background: #f7fbf5; }
+.about-contact, .about-owned, .manufacturing-copy { background-color: var(--brand-tint); }
+.about-facts, .contact { background-color: var(--brand-deep); }
+.about-facts { color: #f2faed; }
+.about-facts b, .home-facts b { color: var(--brand-green); }
+.about-facts b { color: var(--brand-lime); }
+.about-working dl > dt { color: var(--brand-green); }
+.catalog-shell .catalog-nav a[aria-current="page"] {
+  background: var(--brand-green);
+  color: #fff;
+}
+.catalog-shell .catalog-nav a[aria-current="page"] b { color: inherit; }
+.catalog-summary { background: var(--brand-tint); }
+.product-row a:is(:hover,:focus-visible) { background: var(--brand-tint); }
+.assay { background: var(--brand-green); }
+.assay i { background: var(--brand-lime); }
+.catalog-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(12px, 2vw, 24px);
+  align-items: start;
+}
+.catalog-top .search, .catalog-top .search input { width: 100%; }
+.catalog-top .search input { background: #fff; border-color: #aac6aa; }
+
+.journal-index .journal-grid {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: clamp(12px, 1.6vw, 24px);
+  border: 0;
+}
+.journal-index .journal-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+}
+.journal-index .journal-card:not([hidden]) a {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0;
+  padding: 0;
+}
+.journal-index .journal-card a:hover { background: #f7fbf4; }
+.journal-index .journal-photo-wide { aspect-ratio: 1.78; border-radius: 0; }
+.journal-index .journal-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  flex: 1;
+  padding: clamp(15px, 1.65vw, 24px);
+}
+.journal-index .journal-copy small { color: var(--brand-green); font-size: 13px; font-weight: 650; }
+.journal-index .journal-card .journal-copy h3 {
+  font-size: clamp(20px, 1.6vw, 27px);
+  line-height: 1.21;
+  margin-block: 7px 0;
+}
+.journal-index .journal-copy p { margin-block: 8px 14px; }
+.journal-index .journal-copy > span {
+  margin-top: auto;
+  padding-inline: 0;
+  background: none;
+  border-color: transparent;
+  color: var(--brand-green);
+  text-decoration: underline;
+  text-decoration-color: #8cb38a;
+}
+.journal-index .journal-card a:is(:hover,:focus-visible) .journal-copy > span {
+  background: none;
+  border-color: transparent;
+  color: var(--brand-deep);
+}
+.journal-index .journal-filters button[aria-pressed="true"] { background: var(--brand-green); color: #fff; }
+.journal-index .journal-card[hidden] { display: none; }
+
+.contacts-title h1 { font-size: clamp(32px, 3.5vw, 46px); }
+.contact {
+  gap: clamp(23px, 5vw, 70px);
+  background-image: linear-gradient(#103c2bd9, #092d22e8), url("factory.jpg");
+}
+.contact h2 { font-size: clamp(26px, 2.7vw, 36px); margin-bottom: 20px; }
+.contact address a { font-size: clamp(19px, 1.95vw, 24px); line-height: 1.35; }
+.contact address p { font-size: 16px; }
+.contact .formbox h3 { font-size: clamp(21px, 2.15vw, 28px); }
+.contact .formbox { background: #fff; }
+
+.production-top { padding-bottom: clamp(16px, 2.4vw, 32px); }
+.production-banner, .production-capacity, .production-cycle-grid {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) minmax(0,1fr);
+  align-items: stretch;
+}
+.production-banner { background: var(--brand-tint); border: 1px solid var(--line); border-radius: 15px; overflow: hidden; }
+.production-banner-copy { align-self: center; padding: clamp(22px, 4vw, 60px); }
+.production-banner h1 { font-size: clamp(34px, 4.1vw, 65px); overflow-wrap: anywhere; hyphens: auto; }
+.production-banner p { max-width: 46ch; margin-block: 14px 18px; }
+.production-banner figure { min-height: 295px; position: relative; overflow: hidden; margin: 0; }
+.production-banner figure img, .production-cycle-grid figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.production-banner figure img { position: absolute; inset: 0; }
+.production-capacity { align-items: center; gap: clamp(20px, 5.1vw, 80px); }
+.production-capacity-copy p { max-width: 48ch; }
+.production-capacity .chart { background: var(--brand-deep); border-radius: 14px; }
+.production-capacity .chart h2 { font-size: clamp(22px, 2.55vw, 36px); margin-bottom: 19px; }
+.production-capacity .chart i { background: #fff3; }
+.production-capacity .chart u { background: var(--brand-lime); }
+.production-cycle h2 { margin-bottom: clamp(15px, 2.7vw, 36px); }
+.production-cycle-grid {
+  gap: clamp(17px, 2.8vw, 38px);
+  border-radius: 14px;
+  background: var(--brand-tint);
+  padding: clamp(13px, 2.3vw, 30px);
+}
+.production-cycle-grid figure { overflow: hidden; border-radius: 9px; margin: 0; }
+.production-cycle-grid ol { display: grid; align-content: center; list-style: none; margin: 0; padding: 0; }
+.production-cycle-grid li { border-bottom: 1px solid #cadcc6; padding: 13px 5px; }
+.production-cycle-grid li:last-child { border-bottom: 0; }
+.production-cycle-grid h3 { font-size: clamp(20px, 2.11vw, 29px); }
+.production-cycle-grid p { margin: 5px 0 0; }
+.production-next {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 16px;
+}
+.production-next p { margin: 9px 0 0; }
 
 .header-search, .nav-catalog-toggle {
   display: grid;
@@ -176,11 +307,9 @@ dialog.header-search-dialog {
     margin-top: 3px;
     box-shadow: none;
   }
+  .journal-index .journal-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
 }
 @media (max-width: 650px) {
-  .vezen-home .brand-hero { margin: 6px 9px 12px; border-radius: 14px; }
-  .vezen-home .brand-hero .hero-copy { padding-inline: 21px; }
-  .vezen-home .brand-hero h1 { font-size: clamp(36px, 10.5vw, 58px); }
   .header-search { flex-basis: 39px; width: 39px; height: 39px; }
   body > header > .btn { padding-inline: 10px; font-size: 14px; white-space: nowrap; }
   .header-search-results a { grid-template-columns: minmax(0,1fr); }
@@ -203,6 +332,10 @@ dialog.header-search-dialog {
     color: var(--ink);
   }
   .catalog-shell .catalog-picker + .catalog-nav { display: none; }
+  .journal-index .journal-grid { grid-template-columns: minmax(0,1fr); }
+  .production-banner, .production-capacity, .production-cycle-grid { grid-template-columns: minmax(0,1fr); }
+  .production-banner figure { min-height: 0; aspect-ratio: 1.64; }
+  .production-cycle-grid figure { aspect-ratio: 1.65; }
 }
 @media (max-width: 375px) {
   body > header { padding-inline: 12px; gap: 6px; }

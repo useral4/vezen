@@ -1,0 +1,170 @@
+body.vezen-home {
+  --lead-edge: clamp(8px, 1vw, 17px);
+  --lead-header: 76px;
+  --lead-inner: clamp(30px, 4.2vw, 76px);
+  display: flow-root;
+}
+
+body.vezen-home > header {
+  height: var(--lead-header);
+  margin: var(--lead-edge) var(--lead-edge) calc(-1 * var(--lead-header));
+  padding-inline: clamp(19px, 2.7vw, 48px);
+  border-radius: 16px 16px 0 0;
+}
+body.vezen-home > header:not(.has-scrolled) {
+  color: #fff;
+  background: transparent;
+}
+.vezen-home > header:not(.has-scrolled)::after {
+  content: "";
+  position: absolute;
+  inset: auto clamp(19px, 2.7vw, 48px) 0;
+  height: 1px;
+  background: #f2faee50;
+  pointer-events: none;
+}
+.vezen-home > header:not(.has-scrolled) .logo img { filter: brightness(0) invert(1); }
+.vezen-home > header:not(.has-scrolled) .nav-catalog-panel,
+.vezen-home > header:not(.has-scrolled) nav.open { color: var(--ink); }
+.vezen-home > header:not(.has-scrolled) :is(.header-search,.nav-catalog-toggle) {
+  color: inherit;
+  background: #092d1c30;
+  border-color: #edf7e36b;
+}
+.vezen-home > header:not(.has-scrolled) .nav-catalog-toggle { border-color: transparent; }
+.vezen-home > header:not(.has-scrolled) :is(.header-search,.nav-catalog-toggle):hover { background: #f2ffe32b; }
+.vezen-home > header:not(.has-scrolled) > .btn {
+  background: var(--brand-lime);
+  color: var(--brand-deep);
+}
+.vezen-home > header:not(.has-scrolled) :is(.logo,.header-search,.nav-catalog-toggle,.menu,.mast-phone):focus-visible { outline-color: #f5ffe9; }
+.vezen-home .mast-phone {
+  display: none;
+  white-space: nowrap;
+  font-size: 14px;
+  text-decoration: none;
+}
+.vezen-home .mast-phone:hover { text-decoration: underline; }
+
+.vezen-home .brand-hero.lead-frame {
+  display: grid;
+  grid-template-columns: minmax(0,1fr);
+  align-items: end;
+  min-height: clamp(590px, calc(100vh - 2 * var(--lead-edge)), 900px);
+  min-height: clamp(590px, calc(100svh - 2 * var(--lead-edge)), 900px);
+  margin: 0 var(--lead-edge) 14px;
+  border-radius: 16px;
+  color: #fff;
+  background: #133c2a;
+}
+.vezen-home .lead-frame > .lead-content {
+  width: 100%;
+  max-width: none;
+  padding: calc(var(--lead-header) + 25px) var(--lead-inner) clamp(28px, 4.75vh, 55px);
+  align-self: end;
+}
+.vezen-home .lead-frame h1 {
+  font-size: clamp(55px, 6.7vw, 109px);
+  max-width: 18ch;
+  line-height: .98;
+  letter-spacing: -.055em;
+}
+.vezen-home .lead-frame h1 span { display: block; }
+.vezen-home .lead-frame .brand-motion video {
+  opacity: 1;
+  object-position: 53% center;
+}
+.vezen-home .lead-frame .brand-motion::after {
+  background:
+    linear-gradient(180deg, #082b1de6 0%, #0a2c1b32 23%, transparent 54%, #0b27199e 100%),
+    linear-gradient(90deg, #0c291de8 0%, #102e1db3 31%, #13371c35 58%, transparent 94%);
+}
+.lead-bottom {
+  display: grid;
+  grid-template-columns: minmax(0, 1.38fr) minmax(310px, .9fr);
+  align-items: end;
+  gap: 20px clamp(22px, 6vw, 103px);
+  padding-top: clamp(17px, 2.4vw, 33px);
+  margin-top: clamp(21px, 3.05vw, 48px);
+  border-top: 1px solid #eff8ed65;
+}
+.vezen-home .lead-frame .lead-summary p {
+  max-width: 40ch;
+  margin: 0;
+  line-height: 1.44;
+  color: #f4f9ef;
+  font-size: clamp(16px, 1.55vw, 23px);
+}
+.vezen-home .lead-frame .actions { margin-top: 19px; gap: 9px; }
+.vezen-home .lead-frame .lead-product-link {
+  color: #102f20;
+  background: var(--brand-lime);
+}
+.vezen-home .lead-frame .lead-product-link::before { background: #edf7cc; }
+.vezen-home .lead-frame .actions .btn { border-color: #eff7e58f; }
+.vezen-home .lead-frame .actions :is(.button,.btn):focus-visible { outline-color: #f5ffe9; }
+.lead-reading { min-width: 0; }
+.lead-reading-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 7px 12px;
+  margin-bottom: 8px;
+}
+.lead-reading-head h2 { font-size: clamp(15px, 1.55vw, 22px); letter-spacing: -.023em; }
+.lead-reading-head > a { white-space: nowrap; font-weight: 650; font-size: 14px; text-decoration-color: #f0f7ee84; }
+.lead-story {
+  display: grid;
+  grid-template-columns: minmax(100px, .78fr) 1fr;
+  min-height: 132px;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #f7fbf3;
+  color: var(--brand-deep);
+  text-decoration: none;
+  transition: background-color .22s ease;
+}
+.lead-story:hover { background: #eef7e4; }
+.lead-story:focus-visible { outline: 2px solid #f8ffe5; outline-offset: 3px; }
+.lead-story img { width: 100%; height: 100%; object-fit: cover; object-position: 52% center; }
+.lead-story > div { display: grid; align-content: center; gap: 6px; padding: 12px clamp(11px, 1.35vw, 24px); }
+.lead-story h3 { line-height: 1.16; font-size: clamp(16px, 1.43vw, 23px); }
+.lead-story span { font-size: 13px; line-height: 1.28; color: #315641; }
+.lead-story .lead-story-read { text-decoration: underline; text-decoration-color: #6c946f; font-weight: 650; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .lead-content > h1, .lead-bottom { animation: title-in .65s var(--settle) both; }
+  .lead-bottom { animation-delay: .12s; }
+}
+@media (min-width: 1250px) {
+  .vezen-home .mast-phone { display: inline-block; }
+  body.vezen-home > header { gap: clamp(12px, 1.4vw, 23px); }
+  body.vezen-home > header nav { gap: clamp(18px, 2.1vw, 35px); }
+}
+@media (max-width: 940px) {
+  body.vezen-home { --lead-header: 66px; }
+  .vezen-home > header nav.open { border-radius: 0 0 10px 10px; }
+  .lead-bottom { grid-template-columns: minmax(0, 1fr) minmax(280px, .88fr); }
+}
+@media (max-width: 680px) {
+  body.vezen-home { --lead-edge: 8px; --lead-inner: clamp(16px, 5vw, 33px); }
+  body.vezen-home > header { padding-inline: 11px; border-radius: 13px 13px 0 0; }
+  .vezen-home > header:not(.has-scrolled)::after { inset-inline: 12px; }
+  .vezen-home .brand-hero.lead-frame { border-radius: 13px; min-height: min(670px, calc(100svh - 16px)); }
+  .vezen-home .lead-frame > .lead-content { padding-top: calc(var(--lead-header) + clamp(45px, 9.5vh, 92px)); padding-bottom: 20px; }
+  .vezen-home .lead-frame h1 { font-size: clamp(39px, 10.7vw, 64px); }
+  .lead-bottom { grid-template-columns: minmax(0,1fr); gap: 19px; margin-top: 18px; padding-top: 14px; }
+  .vezen-home .lead-frame .actions { margin-top: 13px; }
+  .vezen-home .lead-frame .brand-motion video { object-position: 53% center; }
+  .vezen-home .lead-frame .brand-motion::after {
+    background: linear-gradient(180deg, #082b1ded 0%, #102d1a2c 24%, #0c291db0 53%, #0c291de3 100%);
+  }
+  .lead-story { min-height: 105px; grid-template-columns: minmax(82px,.62fr) 1fr; }
+  .lead-story > div { gap: 4px; padding: 9px 11px; }
+  .lead-story span { font-size: 12px; }
+}
+@media (max-width: 375px) {
+  body.vezen-home > header { padding-inline: 9px; }
+  body.vezen-home > header .logo img { width: 76px; }
+  .vezen-home .lead-frame .actions :is(.button,.btn) { padding-inline: 11px; }
+}

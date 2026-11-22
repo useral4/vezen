@@ -141,6 +141,12 @@ if (catalog && catalogPage) {
     status.textContent = searchWholeCatalog ? visible ? 'Во всём каталоге найдено: '+visible : 'Совпадений нет. Попробуйте название, марку или CAS.' : '';
   }
 
+  function bringCatalogIntoView() {
+    const top = catalogPage.querySelector('.catalog-top');
+    const offset = top.getBoundingClientRect().top - (header?.offsetHeight ?? 0) - 16;
+    if (offset < 0) window.scrollTo({ top: window.scrollY + offset, behavior: 'instant' });
+  }
+
   function showCategory(key, animated = true) {
     const entry = catalog.state[key];
     if (!entry || key === requested) return;
@@ -182,6 +188,7 @@ if (catalog && catalogPage) {
     event.preventDefault();
     const key = link.dataset.category;
     if (key === requested) {
+      bringCatalogIntoView();
       field.value = '';
       searchProducts();
       return;
@@ -193,6 +200,7 @@ if (catalog && catalogPage) {
       location.assign(link.href);
       return;
     }
+    bringCatalogIntoView();
     showCategory(key);
   });
   window.addEventListener('popstate', () => showCategory(categoryAtAddress()));
@@ -207,22 +215,30 @@ if (catalog && catalogPage) {
 
 const backgroundClip = document.querySelector('.brand-hero video');
 if (backgroundClip) {
-  const portrait = matchMedia('(max-width:650px)').matches;
-  if (portrait) backgroundClip.poster = 'assets/brand-open-portrait.jpg';
-  const play = () => {
-    if (backgroundClip.hasAttribute('src')) return;
-    backgroundClip.src = portrait ? backgroundClip.dataset.mobile : backgroundClip.dataset.desktop;
-    backgroundClip.play().catch(() => {});
+  const portrait = matchMedia('(max-width:680px)').matches;
+  if (portrait) backgroundClip.poster = backgroundClip.dataset.mobilePoster || 'assets/brand-open-portrait.jpg';
+  let visible = false;
+  const syncPlayback = () => {
+    if (!visible || document.hidden) {
+      backgroundClip.pause();
+      return;
+    }
+    if (backgroundClip.ended) return;
+    if (!backgroundClip.hasAttribute('src')) {
+      backgroundClip.src = portrait ? backgroundClip.dataset.mobile : backgroundClip.dataset.desktop;
+    }
+    if (backgroundClip.paused) backgroundClip.play().catch(() => {});
   };
   if (!reduced && 'IntersectionObserver' in window) {
     const observer = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) return;
-      observer.disconnect();
-      play();
+      visible = entry.isIntersecting && entry.intersectionRatio >= .2;
+      syncPlayback();
     }, { threshold: .2 });
     observer.observe(backgroundClip);
+    document.addEventListener('visibilitychange', syncPlayback);
   } else if (!reduced) {
-    play();
+    visible = true;
+    syncPlayback();
   }
 }
 
