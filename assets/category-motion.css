@@ -33,38 +33,12 @@
 }
 .category-motion-card[data-motion="playing"] .category-clip { opacity: 1; }
 .category-motion-card[data-motion="playing"] .category-tile::before { opacity: 0; }
-.category-motion-toggle { display: none; }
 @media (hover: none), (pointer: coarse) {
   .category-motion-card .category-visit { display: none; }
-  .category-motion-toggle:not([hidden]) {
-    position: absolute;
-    bottom: 13px;
-    right: 13px;
-    z-index: 2;
-    display: grid;
-    place-items: center;
-    width: 44px;
-    height: 44px;
-    padding: 0;
-    border: 1px solid #bacab4;
-    border-radius: 9px;
-    background: #f3f6e9;
-    color: #264733;
-  }
-  .category-motion-toggle::before {
-    content: "";
-    width: 14px;
-    height: 16px;
-    background: currentColor;
-    clip-path: polygon(14% 0,100% 50%,14% 100%);
-  }
-  .category-motion-toggle[aria-pressed="true"]::before {
-    clip-path: polygon(0 0,33% 0,33% 100%,0 100%,0 0,67% 0,100% 0,100% 100%,67% 100%,67% 0);
-  }
 }
 @media (max-width: 720px) {
   .category-row-secondary > .category-motion-card:last-child { grid-column: 1 / -1; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .category-motion-toggle:not([hidden]), .category-clip { display: none; }
+  .category-clip { display: none; }
 }
