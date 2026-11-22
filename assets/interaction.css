@@ -60,32 +60,34 @@ html { scroll-padding-top: 92px; }
 }
 .vezen-home .brand-hero {
   --hero-paper: #142c21;
-  min-height: clamp(480px, 44vw, 680px);
-  margin: 0 14px;
-  border-radius: 22px;
+  min-height: clamp(405px, 68vh, 640px);
+  min-height: clamp(405px, 68svh, 640px);
+  margin: 0;
+  border-radius: 0 0 22px 22px;
   background: var(--hero-paper);
   color: #f7faf2;
 }
-.vezen-home .hero-copy {
-  padding: clamp(28px, 7vw, 102px);
-  width: min(810px, 75%);
+.vezen-home .brand-hero .hero-copy {
+  padding: clamp(32px, 6vh, 72px) var(--pad);
+  width: min(850px, 100%);
+  max-width: none;
 }
 .vezen-home .hero h1 {
-  font-size: clamp(54px, 6.2vw, 96px);
+  font-size: clamp(48px, 4.7vw, 90px);
   line-height: .98;
   letter-spacing: -.045em;
 }
 .vezen-home .hero h1 span, .vezen-home .hero h1 em { display: block; }
 .vezen-home .hero h1 em { color: #d0e3bc; }
-.vezen-home .hero p { max-width: 43ch; color: #e1eade; font-size: clamp(17px, 1.6vw, 23px); margin-top: 22px; }
+.vezen-home .hero p { max-width: 43ch; color: #e1eade; font-size: clamp(17px, 1.42vw, 22px); margin-top: 18px; }
 .vezen-home .brand-hero .brand-motion video {
-  width: 87%;
-  opacity: .86;
-  object-position: 60% 63%;
-  min-width: 0;
+  inset: 0;
+  width: 100%;
+  opacity: .91;
+  object-position: center 54%;
 }
 .vezen-home .brand-hero .brand-motion::after {
-  background: linear-gradient(90deg,#142c21 4%,#142c21ef 24%,#142c21cc 39%,#142c214d 66%,#142c2126);
+  background: linear-gradient(90deg,#142c21f2 0%,#142c21e6 24%,#142c21bd 41%,#142c2159 66%,#142c2119 100%);
 }
 .vezen-home .hero .actions { gap: 11px; margin-top: 27px; }
 .vezen-home .hero .button { background: #e0ead3; color: #153523; }
@@ -255,9 +257,13 @@ dialog, dialog::backdrop {
   header nav.open { animation: menu-in .28s var(--settle) both; }
   @keyframes menu-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: none; } }
 }
+@media (min-width: 651px) and (max-width: 1600px) and (max-height: 950px) {
+  .vezen-home .section { padding-block: clamp(42px, 7svh, 68px); }
+  .vezen-home .section-heading h2 { font-size: clamp(34px, 3.65vw, 58px); }
+}
 @media (max-width: 650px) {
-  .vezen-home .brand-hero { margin: 0 10px; min-height: 430px; align-items: center; }
-  .vezen-home .hero-copy { width: 100%; padding: 32px 20px; }
+  .vezen-home .brand-hero { margin: 0 10px; min-height: 430px; border-radius: 22px; align-items: center; }
+  .vezen-home .brand-hero .hero-copy { width: 100%; padding: 32px 20px; }
   .vezen-home .hero h1 { font-size: clamp(44px,11.5vw,65px); }
   .vezen-home .brand-hero .brand-motion video { width: 100%; opacity: .61; object-position: center; }
   .vezen-home .brand-hero .brand-motion::after { background: linear-gradient(115deg,#142c21ee 8%,#142c21ba 50%,#142c2135); }
