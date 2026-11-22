@@ -5,19 +5,40 @@
 }
 .category-motion-card > .category-tile { flex: 1 1 100%; min-width: 0; }
 
-[data-category-motion="production"] { --glass: url("category-motion/production.jpg"); }
-[data-category-motion="solvents"] { --glass: url("category-motion/solvents.jpg"); }
-[data-category-motion="acids"] { --glass: url("category-motion/acids.jpg"); }
-[data-category-motion="amines"] { --glass: url("category-motion/amines.jpg"); }
-[data-category-motion="pvc"] { --glass: url("category-motion/pvc.jpg"); }
-[data-category-motion="forest"] { --glass: url("category-motion/forest.jpg"); }
-[data-category-motion="peroxides"] { --glass: url("category-motion/peroxides.jpg"); }
-[data-category-motion="packaging"] { --glass: url("category-motion/packaging.jpg"); }
+[data-category-motion="production"] {
+  --glass: url("category-motion/production.jpg");
+  --mobile-glass: url("category-motion/production-mobile.jpg");
+}
+[data-category-motion="solvents"] {
+  --glass: url("category-motion/solvents.jpg");
+  --mobile-glass: url("category-motion/solvents-mobile.jpg");
+}
+[data-category-motion="acids"] {
+  --glass: url("category-motion/acids.jpg");
+  --mobile-glass: url("category-motion/acids-mobile.jpg");
+}
+[data-category-motion="amines"] {
+  --glass: url("category-motion/amines.jpg");
+  --mobile-glass: url("category-motion/amines-mobile.jpg");
+}
+[data-category-motion="pvc"] {
+  --glass: url("category-motion/pvc.jpg");
+  --mobile-glass: url("category-motion/pvc-mobile.jpg");
+}
+[data-category-motion="forest"] {
+  --glass: url("category-motion/forest.jpg");
+  --mobile-glass: url("category-motion/forest-mobile.jpg");
+}
+[data-category-motion="peroxides"] {
+  --glass: url("category-motion/peroxides.jpg");
+  --mobile-glass: url("category-motion/peroxides-mobile.jpg");
+}
+[data-category-motion="packaging"] {
+  --glass: url("category-motion/packaging.jpg");
+  --mobile-glass: url("category-motion/packaging-mobile.jpg");
+}
 
 .category-motion-card .category-tile::before { background-position: center; }
-.category-motion-card .category-tile:is(:hover,:focus-visible)::before,
-.category-motion-card[data-motion] .category-tile::before { background-image: var(--glass); opacity: 1; transform: none; }
-.category-motion-card[data-motion] .category-tile::after { opacity: 1; }
 .category-motion-card .category-tile::after {
   background: linear-gradient(100deg,#f2f5e9f5 0%,#eef2e6e8 29%,#edf2e4aa 62%,#f1f5e91f 100%);
 }
@@ -31,9 +52,31 @@
   pointer-events: none;
   opacity: 0;
 }
-.category-motion-card[data-motion="playing"] .category-clip { opacity: 1; }
-.category-motion-card[data-motion="playing"] .category-tile::before { opacity: 0; }
-@media (hover: none), (pointer: coarse) {
+@media (hover: hover) and (pointer: fine) {
+  .category-motion-card .category-tile:is(:hover,:focus-visible)::before,
+  .category-motion-card[data-motion] .category-tile::before { background-image: var(--glass); opacity: 1; transform: none; }
+  .category-motion-card[data-motion] .category-tile::after { opacity: 1; }
+  .category-motion-card[data-motion="playing"] .category-clip { opacity: 1; }
+  .category-motion-card[data-motion="playing"] .category-tile::before { opacity: 0; }
+}
+@media not all and (hover: hover) and (pointer: fine) {
+  .category-motion-card { --mobile-clip-opacity: .64; }
+  .category-motion-card .category-tile::before,
+  .category-motion-card .category-tile:is(:hover,:focus-visible)::before {
+    background-image: var(--mobile-glass);
+    opacity: var(--mobile-clip-opacity);
+    transform: none;
+    transition: none;
+  }
+  .category-motion-card .category-tile::after,
+  .category-motion-card .category-tile:is(:hover,:focus-visible)::after { opacity: .78; }
+  .category-motion-card[data-motion="playing"] .category-clip { opacity: var(--mobile-clip-opacity); }
+  .category-motion-card[data-motion="playing"] .category-tile::before { opacity: 0; }
+  .category-motion-card .category-tile-copy {
+    max-width: min(100%, 33ch);
+    hyphens: auto;
+    overflow-wrap: anywhere;
+  }
   .category-motion-card .category-visit { display: none; }
 }
 @media (max-width: 720px) {
