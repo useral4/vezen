@@ -170,8 +170,15 @@ body.vezen-home > header:not(.has-scrolled) {
 }
 
 .vezen-home .home-faq {
+  --faq-ink: #252b30;
+  --faq-muted: #515a62;
+  --faq-surface: #f3f4f5;
+  --faq-border: #d9dee2;
+  --faq-border-active: #aeb8bf;
+  --faq-active: #303a42;
   display: block;
   scroll-margin-top: 14px;
+  color: var(--faq-ink);
 }
 .faq-masthead {
   display: flex;
@@ -187,13 +194,15 @@ body.vezen-home > header:not(.has-scrolled) {
 .faq-masthead .button {
   flex-shrink: 0;
   background: #fff;
-  color: var(--brand-deep);
-  border: 1px solid #9cbea1;
+  color: var(--faq-ink);
+  border: 1px solid var(--faq-border-active);
 }
+.faq-masthead .button::before { background: #e8ebed; }
+.home-faq :focus-visible { outline-color: var(--faq-active); }
 .faq-module {
-  border: 1px solid #d8e5d6;
+  border: 1px solid var(--faq-border);
   border-radius: 16px;
-  background: #f2f8ef;
+  background: var(--faq-surface);
   padding: clamp(13px, 2.15vw, 32px);
 }
 .faq-module.faq-enhanced {
@@ -212,20 +221,20 @@ body.vezen-home > header:not(.has-scrolled) {
   display: block;
   padding: 11px 14px;
   min-height: 47px;
-  border: 1px solid #d3e4d0;
+  border: 1px solid var(--faq-border);
   border-radius: 9px;
   background: #fff;
-  color: var(--brand-deep);
+  color: var(--faq-ink);
   font-weight: 650;
   font-size: 15px;
   text-align: left;
   line-height: 1.3;
   transition: background-color .2s ease, border-color .2s ease, color .2s ease;
 }
-.faq-topics button:hover { background: #eaf3e7; }
+.faq-topics button:hover { background: #edf0f2; }
 .faq-topics button[aria-selected="true"] {
-  background: var(--brand-green);
-  border-color: var(--brand-green);
+  background: var(--faq-active);
+  border-color: var(--faq-active);
   color: #fff;
 }
 .faq-panels { min-width: 0; }
@@ -234,15 +243,15 @@ body.vezen-home > header:not(.has-scrolled) {
 .vezen-home .home-faq .faq-item {
   margin: 0;
   background: #fff;
-  border: 1px solid #dae9d7;
+  border: 1px solid var(--faq-border);
   border-radius: 10px;
   overflow: hidden;
 }
-.vezen-home .home-faq .faq-item[open] { border-color: #b6d1af; }
+.vezen-home .home-faq .faq-item[open] { border-color: var(--faq-border-active); }
 .vezen-home .home-faq .faq-item summary {
   min-height: 57px;
   padding: 11px clamp(12px, 1.45vw, 23px);
-  color: var(--ink);
+  color: var(--faq-ink);
   gap: 12px;
   line-height: 1.27;
   cursor: pointer;
@@ -250,15 +259,16 @@ body.vezen-home > header:not(.has-scrolled) {
   font-weight: 650;
 }
 .vezen-home .home-faq .faq-item summary:focus-visible { outline-offset: -4px; border-radius: 9px; }
-.vezen-home .home-faq .faq-item summary:hover { background: #f8fcf7; color: var(--brand-green); }
+.vezen-home .home-faq .faq-item summary:hover { background: #f7f8f9; }
 .vezen-home .home-faq .faq-answer { padding: 0 clamp(15px, 1.45vw, 23px) 15px; }
-.vezen-home .home-faq .faq-answer p { max-width: 68ch; font-size: 16px; line-height: 1.55; }
+.vezen-home .home-faq .faq-answer p { max-width: 68ch; font-size: 16px; line-height: 1.55; color: var(--faq-muted); }
+.vezen-home .home-faq .faq-answer a { color: var(--faq-ink); text-decoration-color: #828d96; }
 .vezen-home .home-faq .faq-toggle {
   width: 29px;
   height: 29px;
   border-radius: 7px;
-  background: #eff7ea;
-  color: var(--brand-green);
+  background: var(--faq-surface);
+  color: var(--faq-active);
 }
 .vezen-home .home-faq .faq-toggle::before { display: none; }
 .vezen-home .home-faq .faq-toggle::after {
@@ -272,7 +282,7 @@ body.vezen-home > header:not(.has-scrolled) {
 }
 .vezen-home .home-faq .faq-item[open]:not(.closing) .faq-toggle {
   color: #fff;
-  background: var(--brand-green);
+  background: var(--faq-active);
 }
 .vezen-home .home-faq .faq-item[open]:not(.closing) .faq-toggle::after { transform: translateY(2px) rotate(225deg); }
 
