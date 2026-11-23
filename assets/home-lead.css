@@ -15,15 +15,8 @@ body.vezen-home > header:not(.has-scrolled) {
   color: #fff;
   background: transparent;
 }
-.vezen-home > header:not(.has-scrolled)::after {
-  content: "";
-  position: absolute;
-  inset: auto clamp(19px, 2.7vw, 48px) 0;
-  height: 1px;
-  background: #f2faee50;
-  pointer-events: none;
-}
-.vezen-home > header:not(.has-scrolled) .logo img { filter: brightness(0) invert(1); }
+.vezen-home > header:not(.has-scrolled) .logo-dark { display: none; }
+.vezen-home > header:not(.has-scrolled) .logo-light { display: block; }
 .vezen-home > header:not(.has-scrolled) .nav-catalog-panel,
 .vezen-home > header:not(.has-scrolled) nav.open { color: var(--ink); }
 .vezen-home > header:not(.has-scrolled) :is(.header-search,.nav-catalog-toggle) {
@@ -34,9 +27,10 @@ body.vezen-home > header:not(.has-scrolled) {
 .vezen-home > header:not(.has-scrolled) .nav-catalog-toggle { border-color: transparent; }
 .vezen-home > header:not(.has-scrolled) :is(.header-search,.nav-catalog-toggle):hover { background: #f2ffe32b; }
 .vezen-home > header:not(.has-scrolled) > .btn {
-  background: var(--brand-lime);
+  background: #fff;
   color: var(--brand-deep);
 }
+.vezen-home > header:not(.has-scrolled) > .btn::before { background: var(--action-light); }
 .vezen-home > header:not(.has-scrolled) :is(.logo,.header-search,.nav-catalog-toggle,.menu,.mast-phone):focus-visible { outline-color: #f5ffe9; }
 .vezen-home .mast-phone {
   display: none;
@@ -64,10 +58,11 @@ body.vezen-home > header:not(.has-scrolled) {
   align-self: end;
 }
 .vezen-home .lead-frame h1 {
-  font-size: clamp(55px, 6.7vw, 109px);
+  font-size: clamp(49px, 5.95vw, 93px);
   max-width: 18ch;
   line-height: .98;
-  letter-spacing: -.055em;
+  font-weight: 600;
+  letter-spacing: -.035em;
 }
 .vezen-home .lead-frame h1 span { display: block; }
 .vezen-home .lead-frame .brand-motion video {
@@ -86,7 +81,6 @@ body.vezen-home > header:not(.has-scrolled) {
   gap: 20px clamp(22px, 6vw, 103px);
   padding-top: clamp(17px, 2.4vw, 33px);
   margin-top: clamp(21px, 3.05vw, 48px);
-  border-top: 1px solid #eff8ed65;
 }
 .vezen-home .lead-frame .lead-summary p {
   max-width: 40ch;
@@ -97,11 +91,17 @@ body.vezen-home > header:not(.has-scrolled) {
 }
 .vezen-home .lead-frame .actions { margin-top: 19px; gap: 9px; }
 .vezen-home .lead-frame .lead-product-link {
-  color: #102f20;
-  background: var(--brand-lime);
+  color: var(--brand-deep);
+  background: #fff;
 }
-.vezen-home .lead-frame .lead-product-link::before { background: #edf7cc; }
-.vezen-home .lead-frame .actions .btn { border-color: #eff7e58f; }
+.vezen-home .lead-frame .lead-product-link::before,
+.vezen-home .lead-frame .actions .btn::before { background: var(--action-light); }
+.vezen-home .lead-frame .actions .btn {
+  color: #fff;
+  border-color: #f5f6f8a6;
+  padding: 11px 18px;
+}
+.vezen-home .lead-frame .actions .btn:is(:hover,:focus-visible) { color: var(--brand-deep); }
 .vezen-home .lead-frame .actions :is(.button,.btn):focus-visible { outline-color: #f5ffe9; }
 .lead-reading { min-width: 0; }
 .lead-reading-head {
@@ -119,18 +119,18 @@ body.vezen-home > header:not(.has-scrolled) {
   min-height: 132px;
   border-radius: 10px;
   overflow: hidden;
-  background: #f7fbf3;
+  background: #fff;
   color: var(--brand-deep);
   text-decoration: none;
   transition: background-color .22s ease;
 }
-.lead-story:hover { background: #eef7e4; }
+.lead-story:hover { background: #f1f3f5; }
 .lead-story:focus-visible { outline: 2px solid #f8ffe5; outline-offset: 3px; }
 .lead-story img { width: 100%; height: 100%; object-fit: cover; object-position: 52% center; }
 .lead-story > div { display: grid; align-content: center; gap: 6px; padding: 12px clamp(11px, 1.35vw, 24px); }
 .lead-story h3 { line-height: 1.16; font-size: clamp(16px, 1.43vw, 23px); }
-.lead-story span { font-size: 13px; line-height: 1.28; color: #315641; }
-.lead-story .lead-story-read { text-decoration: underline; text-decoration-color: #6c946f; font-weight: 650; }
+.lead-story span { font-size: 13px; line-height: 1.28; color: var(--muted); }
+.lead-story .lead-story-read { text-decoration: underline; text-decoration-color: #9aa0aa; font-weight: 600; }
 
 @media (prefers-reduced-motion: no-preference) {
   .lead-content > h1, .lead-bottom { animation: title-in .65s var(--settle) both; }
@@ -149,12 +149,12 @@ body.vezen-home > header:not(.has-scrolled) {
 @media (max-width: 680px) {
   body.vezen-home { --lead-edge: 8px; --lead-inner: clamp(16px, 5vw, 33px); }
   body.vezen-home > header { padding-inline: 11px; border-radius: 13px 13px 0 0; }
-  .vezen-home > header:not(.has-scrolled)::after { inset-inline: 12px; }
   .vezen-home .brand-hero.lead-frame { border-radius: 13px; min-height: min(670px, calc(100svh - 16px)); }
   .vezen-home .lead-frame > .lead-content { padding-top: calc(var(--lead-header) + clamp(45px, 9.5vh, 92px)); padding-bottom: 20px; }
-  .vezen-home .lead-frame h1 { font-size: clamp(39px, 10.7vw, 64px); }
+  .vezen-home .lead-frame h1 { font-size: clamp(33px, 8.8vw, 57px); }
   .lead-bottom { grid-template-columns: minmax(0,1fr); gap: 19px; margin-top: 18px; padding-top: 14px; }
   .vezen-home .lead-frame .actions { margin-top: 13px; }
+  .vezen-home .lead-frame .actions :is(.button,.btn) { padding: 9px 12px; }
   .vezen-home .lead-frame .brand-motion video { object-position: 53% center; }
   .vezen-home .lead-frame .brand-motion::after {
     background: linear-gradient(180deg, #082b1ded 0%, #102d1a2c 24%, #0c291db0 53%, #0c291de3 100%);
@@ -165,8 +165,86 @@ body.vezen-home > header:not(.has-scrolled) {
 }
 @media (max-width: 375px) {
   body.vezen-home > header { padding-inline: 9px; }
-  body.vezen-home > header .logo img { width: 76px; }
+  body.vezen-home > header .logo img { width: 89px; }
   .vezen-home .lead-frame .actions :is(.button,.btn) { padding-inline: 11px; }
+}
+
+.vezen-home .home-facts, .home-facts div + div { border: 0; }
+.vezen-home .home-facts span { color: var(--muted); }
+.vezen-home :is(.section-heading,.journal-masthead) h2 {
+  font-size: clamp(31px, 3.35vw, 49px);
+}
+.vezen-home .category-tile-copy strong {
+  font-size: clamp(20px, 1.85vw, 29px);
+  font-weight: 600;
+}
+.vezen-home .category-tile::after {
+  background: linear-gradient(100deg, #f7f8faf5 0%, #f4f5f7e8 29%, #f0f1f4a8 62%, #f6f7f91f 100%);
+}
+.vezen-home .category-visit { background: var(--brand-deep); }
+
+.manufacturing-layout { align-items: stretch; background: var(--brand-tint); }
+.manufacturing-image { align-content: center; background: #e7e9eb; }
+.manufacturing-steps { align-self: center; }
+.manufacturing-steps .faq-item summary { color: var(--ink); }
+.manufacturing-steps .faq-item summary:focus:not(:focus-visible) { outline: none; }
+.manufacturing-steps .faq-item summary:focus-visible { outline-color: var(--brand-deep); }
+.manufacturing-steps .faq-item .faq-toggle { color: var(--brand-deep); background: #fff; }
+.manufacturing-steps .faq-item[open]:not(.closing) .faq-toggle { color: #fff; background: var(--brand-deep); }
+
+.home-article-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  grid-auto-rows: 1fr;
+  gap: clamp(12px, 1.55vw, 22px);
+}
+.home-article {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+}
+.home-article-picture {
+  display: block;
+  aspect-ratio: 2.1;
+  overflow: hidden;
+  background: var(--brand-tint);
+}
+.home-article-picture:focus-visible { outline-offset: -3px; }
+.home-article-picture img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.home-article-copy {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: start;
+  padding: clamp(15px, 1.7vw, 24px);
+}
+.home-article-topic { color: var(--muted); font-size: 14px; }
+.home-article-copy h3 {
+  font-size: clamp(19px, 1.7vw, 25px);
+  line-height: 1.2;
+  margin-block: 5px 9px;
+}
+.home-article-copy p {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  margin: 0 0 16px;
+  font-size: 15px;
+  line-height: 1.45;
+}
+.home-article-copy .button { margin-top: auto; }
+@media (max-width: 650px) {
+  .home-article-grid { grid-template-columns: minmax(0, 1fr); }
+  .vezen-home .category-tile-copy strong { font-size: clamp(17px, 4.2vw, 23px); }
 }
 
 .vezen-home .home-faq {
@@ -292,6 +370,6 @@ body.vezen-home > header:not(.has-scrolled) {
   .faq-topics button { min-height: 42px; padding: 8px 10px; font-size: 13px; }
   .faq-masthead { align-items: start; flex-wrap: wrap; }
   .faq-masthead h2 { font-size: clamp(28px, 8.5vw, 42px); }
-  .faq-masthead .button { min-height: 42px; padding-inline: 13px; font-size: 14px; }
+  .faq-masthead .button { padding-inline: 13px; font-size: 14px; }
   .vezen-home .home-faq .faq-answer p { font-size: 15px; }
 }

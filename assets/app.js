@@ -316,49 +316,55 @@ if (faqTopics) {
 }
 
 if (!reduced && typeof Element.prototype.animate === 'function') {
+  const disclosureGroups = new Map();
   document.querySelectorAll('.faq-item').forEach(details => {
     const summary = details.querySelector('summary');
     const answer = details.querySelector('.faq-answer');
+    const group = details.getAttribute('name');
     let animation;
     let opening = false;
-    summary.addEventListener('click', event => {
-      event.preventDefault();
+    const isOpen = () => animation ? opening : details.open;
+
+    function setOpen(next) {
+      if (isOpen() === next) return;
       const initialHeight = details.getBoundingClientRect().height;
-      const wasOpen = animation ? opening : details.open;
       animation?.cancel();
-      opening = !wasOpen;
+      opening = next;
       if (opening) details.open = true;
       details.classList.toggle('closing', !opening);
       const borderHeight = details.offsetHeight - details.clientHeight;
       const finalHeight = summary.offsetHeight + (opening ? answer.offsetHeight : 0) + borderHeight;
       details.style.overflow = 'hidden';
-      animation = details.animate({ height: [initialHeight+'px', finalHeight+'px'] }, {
+      const transition = details.animate({ height: [initialHeight+'px', finalHeight+'px'] }, {
         duration: 290,
         easing: 'cubic-bezier(.24,.75,.28,1)',
         fill: 'both'
       });
-      animation.onfinish = () => {
+      animation = transition;
+      transition.onfinish = () => {
+        if (animation !== transition) return;
         if (!opening) details.open = false;
         details.classList.remove('closing');
-        animation.cancel();
+        transition.cancel();
         animation = undefined;
         details.style.removeProperty('overflow');
       };
-    });
-  });
-}
+    }
 
-const showcaseJournal = document.querySelector('.journal-showcase');
-if (showcaseJournal) {
-  const buttons = [...showcaseJournal.querySelectorAll('[data-story-select]')];
-  const panels = [...showcaseJournal.querySelectorAll('[data-story-panel]')];
-  const frame = showcaseJournal.querySelector('.journal-feature-stage');
-  showcaseJournal.addEventListener('click', event => {
-    const button = event.target.closest('[data-story-select]');
-    if (!button || button.getAttribute('aria-pressed') === 'true') return;
-    const selection = button.dataset.storySelect;
-    buttons.forEach(item => item.setAttribute('aria-pressed',String(item === button)));
-    animateChange(frame,() => panels.forEach(panel => {panel.hidden = panel.dataset.storyPanel !== selection;}));
+    if (group) {
+      // Native groups still work with JavaScript disabled or reduced motion.
+      details.removeAttribute('name');
+      if (!disclosureGroups.has(group)) disclosureGroups.set(group, []);
+      disclosureGroups.get(group).push(setOpen);
+    }
+    summary.addEventListener('click', event => {
+      event.preventDefault();
+      const next = !isOpen();
+      if (next && group) disclosureGroups.get(group).forEach(toggle => {
+        if (toggle !== setOpen) toggle(false);
+      });
+      setOpen(next);
+    });
   });
 }
 

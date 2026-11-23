@@ -1,50 +1,83 @@
 @font-face {
-  font-family: "Golos Text";
-  src: url("golos-text-variable.ttf") format("truetype");
+  font-family: "IBM Plex Sans";
+  src: url("ibm-plex-sans-cyrillic.woff2") format("woff2");
   font-style: normal;
-  font-weight: 400 900;
+  font-weight: 400 700;
   font-display: swap;
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "IBM Plex Sans";
+  src: url("ibm-plex-sans-latin.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 :root {
   --paper: #fff;
-  --brand-logo: #5f8d4e;
-  --brand-deep: #123e2c;
-  --brand-green: #215c3d;
-  --brand-lime: #c9e78a;
-  --brand-tint: #f0f8ea;
-  --ink: #16392a;
-  --pine: var(--brand-green);
-  --pine-dark: var(--brand-green);
-  --action-light: var(--brand-lime);
+  --brand-deep: #24262d;
+  --brand-strong: #383c45;
+  --brand-lime: #8fde3d;
+  --brand-tint: #f3f4f6;
+  --ink: var(--brand-deep);
+  --muted: #515761;
+  --pine: var(--brand-deep);
+  --pine-dark: var(--brand-deep);
+  --action-light: #e4e7eb;
   --action-ink: var(--brand-deep);
-  --line: #d9e6d8;
+  --line: #dce0e5;
   --rule: var(--line);
   --soft: var(--brand-tint);
 }
-body { font-family: "Golos Text", Arial, sans-serif; }
+body { font-family: "IBM Plex Sans", Arial, sans-serif; }
+h1, h2, h3 { font-weight: 600; letter-spacing: -.025em; }
 body.vezen-home, body > header, body > header.has-scrolled { background: var(--paper); }
 body > header.has-scrolled { box-shadow: 0 1px 0 var(--line); }
 
-.btn::before, .button::before { background: var(--brand-lime); }
-.check input[type="checkbox"] { accent-color: var(--brand-logo); }
+.logo img { width: clamp(145px, 12.8vw, 180px); height: auto; }
+.logo .logo-light { display: none; }
+.btn, .button {
+  min-height: 46px;
+  padding: 11px 18px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: var(--brand-deep);
+  color: #fff;
+  font-weight: 600;
+}
+.btn::before, .button::before { background: var(--brand-strong); }
+.btn:is(:hover,:focus-visible), .button:is(:hover,:focus-visible) {
+  color: #fff;
+  background: var(--brand-deep);
+}
+:is(.btn,.button).button-outline,
+:is(.btn,.button).button-outline:is(:hover,:focus-visible) {
+  color: var(--brand-deep);
+  background: transparent;
+  border-color: #b3b7c1;
+}
+:is(.btn,.button).button-outline::before { background: var(--action-light); }
+.check input[type="checkbox"] { accent-color: var(--brand-lime); }
 .vezen-home .home-facts { border-color: var(--line); }
 .home-faq .faq-item { background: #f5faf2; }
-.vezen-home .category-tile { background: #f7fbf5; }
+.vezen-home .category-tile { background: #f6f7f8; border-color: var(--line); color: var(--ink); }
+.vezen-home .category-symbol { filter: none; opacity: .83; }
 .about-contact, .about-owned, .manufacturing-copy { background-color: var(--brand-tint); }
 .about-facts, .contact { background-color: var(--brand-deep); }
 .about-facts { color: #f2faed; }
-.about-facts b, .home-facts b { color: var(--brand-green); }
+.home-facts b { color: var(--brand-deep); }
 .about-facts b { color: var(--brand-lime); }
-.about-working dl > dt { color: var(--brand-green); }
+.about-working dl > dt { color: var(--brand-strong); }
 .catalog-shell .catalog-nav a[aria-current="page"] {
-  background: var(--brand-green);
+  background: var(--brand-deep);
   color: #fff;
 }
 .catalog-shell .catalog-nav a[aria-current="page"] b { color: inherit; }
 .catalog-summary { background: var(--brand-tint); }
 .product-row a:is(:hover,:focus-visible) { background: var(--brand-tint); }
-.assay { background: var(--brand-green); }
+.assay { background: var(--brand-deep); }
 .assay i { background: var(--brand-lime); }
 .catalog-top {
   display: grid;
@@ -53,14 +86,14 @@ body > header.has-scrolled { box-shadow: 0 1px 0 var(--line); }
   align-items: start;
 }
 .catalog-top .search, .catalog-top .search input { width: 100%; }
-.catalog-top .search input { background: #fff; border-color: #aac6aa; }
+.catalog-top .search input { background: #fff; border-color: #b3b7c1; }
 .catalog-search-field { display: block; position: relative; margin-top: 5px; }
 .catalog-search-field .search-glyph {
   position: absolute;
   top: 50%;
   left: 17px;
   transform: translateY(-50%);
-  color: var(--brand-green);
+  color: var(--brand-strong);
   pointer-events: none;
 }
 .catalog-top .catalog-search-field input {
@@ -88,7 +121,7 @@ body > header.has-scrolled { box-shadow: 0 1px 0 var(--line); }
   gap: 0;
   padding: 0;
 }
-.journal-index .journal-card a:hover { background: #f7fbf4; }
+.journal-index .journal-card a:hover { background: #f8f9fa; }
 .journal-index .journal-photo-wide { aspect-ratio: 1.78; border-radius: 0; }
 .journal-index .journal-copy {
   display: flex;
@@ -97,7 +130,7 @@ body > header.has-scrolled { box-shadow: 0 1px 0 var(--line); }
   flex: 1;
   padding: clamp(15px, 1.65vw, 24px);
 }
-.journal-index .journal-copy small { color: var(--brand-green); font-size: 13px; font-weight: 650; }
+.journal-index .journal-copy small { color: var(--muted); font-size: 13px; font-weight: 600; }
 .journal-index .journal-card .journal-copy h3 {
   font-size: clamp(20px, 1.6vw, 27px);
   line-height: 1.21;
@@ -109,16 +142,16 @@ body > header.has-scrolled { box-shadow: 0 1px 0 var(--line); }
   padding-inline: 0;
   background: none;
   border-color: transparent;
-  color: var(--brand-green);
+  color: var(--brand-strong);
   text-decoration: underline;
-  text-decoration-color: #8cb38a;
+  text-decoration-color: #9298a3;
 }
 .journal-index .journal-card a:is(:hover,:focus-visible) .journal-copy > span {
   background: none;
   border-color: transparent;
   color: var(--brand-deep);
 }
-.journal-index .journal-filters button[aria-pressed="true"] { background: var(--brand-green); color: #fff; }
+.journal-index .journal-filters button[aria-pressed="true"] { background: var(--brand-deep); color: #fff; }
 .journal-index .journal-card[hidden] { display: none; }
 
 .contacts-title h1 { font-size: clamp(32px, 3.5vw, 46px); }
@@ -191,8 +224,8 @@ body > header.has-scrolled { box-shadow: 0 1px 0 var(--line); }
 }
 .header-search { flex: 0 0 41px; margin-inline-end: -11px; }
 .header-search:hover, .nav-catalog-toggle:hover, .nav-catalog-toggle[aria-expanded="true"] {
-  background: #edf2ed;
-  border-color: #c4d0c6;
+  background: #edf0f3;
+  border-color: #c5cbd2;
 }
 .search-glyph {
   position: relative;
@@ -244,8 +277,8 @@ body > header.has-scrolled { box-shadow: 0 1px 0 var(--line); }
   font-size: 15px;
 }
 .nav-catalog-panel a::after { content: none; }
-.nav-catalog-panel a:is(:hover,:focus-visible,[aria-current]) { background: #eef3ee; }
-.nav-catalog-panel .catalog-all { margin-top: 4px; border-top: 1px solid var(--line); color: #214f39; }
+.nav-catalog-panel a:is(:hover,:focus-visible,[aria-current]) { background: #eef0f3; }
+.nav-catalog-panel .catalog-all { margin-top: 4px; border-top: 1px solid var(--line); color: var(--brand-deep); }
 
 dialog.header-search-dialog {
   width: min(580px, calc(100vw - 24px));
@@ -325,8 +358,9 @@ dialog.header-search-dialog {
   .journal-index .journal-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
 }
 @media (max-width: 650px) {
+  body > header .logo img { width: clamp(92px, 26vw, 120px); }
   .header-search { flex-basis: 39px; width: 39px; height: 39px; }
-  body > header > .btn { padding-inline: 10px; font-size: 14px; white-space: nowrap; }
+  body > header > .btn { min-height: 46px; padding-inline: 10px; font-size: 14px; white-space: nowrap; }
   .header-search-results a { grid-template-columns: minmax(0,1fr); }
   .catalog-picker {
     display: grid;
@@ -354,7 +388,7 @@ dialog.header-search-dialog {
 }
 @media (max-width: 375px) {
   body > header { padding-inline: 12px; gap: 6px; }
-  body > header .logo img { width: 84px; }
+  body > header .logo img { width: 91px; }
   body > header > .btn { padding-inline: 9px; font-size: 12px; }
   body > header > .menu { width: 33px; }
   .header-search { flex-basis: 36px; width: 36px; height: 36px; }
